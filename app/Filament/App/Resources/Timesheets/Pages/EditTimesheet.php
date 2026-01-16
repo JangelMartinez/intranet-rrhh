@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\Holidays\Pages;
+namespace App\Filament\App\Resources\Timesheets\Pages;
 
-use App\Filament\Resources\Holidays\HolidayResource;
+use App\Filament\App\Resources\Timesheets\TimesheetResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditHoliday extends EditRecord
+class EditTimesheet extends EditRecord
 {
-    protected static string $resource = HolidayResource::class;
+    protected static string $resource = TimesheetResource::class;
 
     protected function getHeaderActions(): array
     {

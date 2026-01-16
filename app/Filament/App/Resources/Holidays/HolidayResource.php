@@ -1,29 +1,32 @@
 <?php
 
-namespace App\Filament\Resources\Holidays;
+namespace App\Filament\App\Resources\Holidays;
 
-use App\Filament\Resources\Holidays\Pages\CreateHoliday;
-use App\Filament\Resources\Holidays\Pages\EditHoliday;
-use App\Filament\Resources\Holidays\Pages\ListHolidays;
-use App\Filament\Resources\Holidays\Schemas\HolidayForm;
-use App\Filament\Resources\Holidays\Tables\HolidaysTable;
-use App\Models\Holiday;
+use App\Filament\App\Resources\Holidays\Pages\CreateHoliday;
+use App\Filament\App\Resources\Holidays\Pages\EditHoliday;
+use App\Filament\App\Resources\Holidays\Pages\ListHolidays;
+use App\Filament\App\Resources\Holidays\Schemas\HolidayForm;
+use App\Filament\App\Resources\Holidays\Tables\HolidaysTable;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use UnitEnum;
+use App\Models\Holiday;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class HolidayResource extends Resource
 {
     protected static ?string $model = Holiday::class;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
-    protected static string|UnitEnum|null $navigationGroup = 'Employee Management';
-    protected static ?int $navigationSort = 3;
-    protected static ?string $recordTitleAttribute = 'Holiday';
 
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', Auth::user()->id);
+    }
+    
     public static function form(Schema $schema): Schema
     {
         return HolidayForm::configure($schema);

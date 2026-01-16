@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Holidays\Pages;
+namespace App\Filament\App\Resources\Holidays\Pages;
 
-use App\Filament\Resources\Holidays\HolidayResource;
+use App\Filament\App\Resources\Holidays\HolidayResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
