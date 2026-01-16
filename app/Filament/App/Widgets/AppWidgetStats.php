@@ -20,6 +20,7 @@ class AppWidgetStats extends StatsOverviewWidget
             Stat::make('Pending Holidays', $this->getPendingHolidays(Auth::user())),
             Stat::make('Approved Holidays', $this->getApprovedHolidays(Auth::user())),
             Stat::make('Total work', $this->getTotalWork(Auth::user())),
+            Stat::make('Total pause', $this->getTotalPause(Auth::user())),
         ];
     }
 
@@ -38,7 +39,31 @@ class AppWidgetStats extends StatsOverviewWidget
     protected function getTotalWork(User $user)
     {
         $timesheets = Timesheet::where('user_id', $user->id)
-            ->where('status', 'work')->get();
+            ->where('status', 'work')
+            ->whereDate('created_at', Carbon::today())
+            ->get();
+
+        $sumSeconds = 0;
+        foreach ($timesheets as $timesheet) {
+            $startTime = Carbon::parse($timesheet->day_in);
+            $endTime = Carbon::parse($timesheet->day_out);
+
+            $duration = $startTime->diffInSeconds($endTime);
+            //dd($duration);
+            $sumSeconds += $duration;
+            //dd($sumSeconds);
+        }
+
+        $timeformat = gmdate("H:i:s", $sumSeconds);
+        return $timeformat;
+    }
+
+     protected function getTotalPause(User $user)
+    {
+        $timesheets = Timesheet::where('user_id', $user->id)
+            ->where('status', 'pause')
+            ->whereDate('created_at', Carbon::today())
+            ->get();
 
         $sumSeconds = 0;
         foreach ($timesheets as $timesheet) {
